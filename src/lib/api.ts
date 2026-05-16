@@ -1,82 +1,71 @@
-const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL ||
-  "http://localhost:3000";
+import {
+  getAnimeById,
+  getTrendingAnime,
+  getUpcomingAnime,
+} from "@/lib/anilist";
 
-async function fetchApiData<T>(
-  url: string,
-  revalidate: number
-): Promise<T | null> {
+import { getLatestAnimeNews } from "@/lib/news";
+
+export async function fetchTrendingAnime() {
   try {
-    const response = await fetch(
-      url,
-      {
-        next: {
-          revalidate,
-        },
-      }
-    );
+    const anime = await getTrendingAnime();
 
-    const data =
-      await response.json();
-
-    if (!response.ok) {
-      if (
-        response.status !== 404 &&
-        response.status !== 400
-      ) {
-        console.warn(
-          "API request failed:",
-          {
-            url,
-            status: response.status,
-            data,
-          }
-        );
-      }
-
-      return null;
+    if (!Array.isArray(anime)) {
+      return [];
     }
 
-    return data?.data || null;
+    return anime;
   } catch (error) {
-    console.warn(
-      "API request error:",
-      {
-        url,
-        error,
-      }
-    );
+    console.warn("fetchTrendingAnime error:", error);
 
-    return null;
+    return [];
   }
 }
 
-export async function fetchTrendingAnime() {
-  return fetchApiData(
-    `${baseUrl}/api/anime/trending`,
-    3600
-  );
-}
-
 export async function fetchLatestNews() {
-  return fetchApiData(
-    `${baseUrl}/api/news/latest`,
-    1800
-  );
+  try {
+    const news = await getLatestAnimeNews();
+
+    if (!Array.isArray(news)) {
+      return [];
+    }
+
+    return news;
+  } catch (error) {
+    console.warn("fetchLatestNews error:", error);
+
+    return [];
+  }
 }
 
 export async function fetchUpcomingAnime() {
-  return fetchApiData(
-    `${baseUrl}/api/anime/upcoming`,
-    3600
-  );
+  try {
+    const anime = await getUpcomingAnime();
+
+    if (!Array.isArray(anime)) {
+      return [];
+    }
+
+    return anime;
+  } catch (error) {
+    console.warn("fetchUpcomingAnime error:", error);
+
+    return [];
+  }
 }
 
-export async function fetchAnimeById(
-  id: string
-) {
-  return fetchApiData(
-    `${baseUrl}/api/anime/${id}`,
-    3600
-  );
+export async function fetchAnimeById(id: string) {
+  try {
+    if (!id) {
+      return null;
+    }
+
+    const anime = await getAnimeById(id);
+
+    return anime || null;
+  } catch (error) {
+    console.warn("fetchAnimeById error:", error);
+
+    return null;
+  }
 }

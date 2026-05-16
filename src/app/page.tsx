@@ -1,8 +1,9 @@
+import { BlogGuidesSection } from "@/components/home/blog-guides-section";
+import { CategoryPills } from "@/components/home/category-pills";
+import { EditorialSection } from "@/components/home/editorial-section";
 import { HeroSection } from "@/components/home/hero-section";
 import { TrendingAnimeSection } from "@/components/home/trending-anime-section";
-import { CategoryPills } from "@/components/home/category-pills";
 import { UpcomingReleasesSection } from "@/components/home/upcoming-releases-section";
-import { EditorialSection } from "@/components/home/editorial-section";
 import { BackgroundGlow } from "@/components/layout/background-glow";
 
 import {
@@ -10,6 +11,8 @@ import {
   fetchLatestNews,
   fetchUpcomingAnime,
 } from "@/lib/api";
+
+export const revalidate = 1800;
 
 function ensureArray<T = any>(value: unknown): T[] {
   if (Array.isArray(value)) {
@@ -29,9 +32,12 @@ function ensureArray<T = any>(value: unknown): T[] {
 }
 
 export default async function HomePage() {
-  const trendingAnimeResponse = await fetchTrendingAnime();
-  const latestNewsResponse = await fetchLatestNews();
-  const upcomingAnimeResponse = await fetchUpcomingAnime();
+  const [trendingAnimeResponse, latestNewsResponse, upcomingAnimeResponse] =
+    await Promise.all([
+      fetchTrendingAnime(),
+      fetchLatestNews(),
+      fetchUpcomingAnime(),
+    ]);
 
   const trendingAnime = ensureArray(trendingAnimeResponse);
   const latestNews = ensureArray(latestNewsResponse);
@@ -41,15 +47,17 @@ export default async function HomePage() {
     <main className="min-h-screen bg-background text-foreground">
       <BackgroundGlow />
 
+      <HeroSection anime={trendingAnime} />
+
       <CategoryPills />
 
-      <HeroSection anime={trendingAnime} />
+      <EditorialSection news={latestNews} trendingAnime={trendingAnime} />
+
+      <BlogGuidesSection />
 
       <TrendingAnimeSection anime={trendingAnime} />
 
       <UpcomingReleasesSection anime={upcomingAnime} />
-
-      <EditorialSection news={latestNews} trendingAnime={trendingAnime} />
     </main>
   );
 }

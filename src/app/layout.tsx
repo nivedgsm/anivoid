@@ -4,39 +4,99 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://anivoid-kappa.vercel.app";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+
   title: {
-    default: "Anivoid",
-    template: "%s | Anivoid",
+    default: "Anivoid News Network | Anime News, Release Dates & Guides",
+    template: "%s | Anivoid News Network",
   },
+
   description:
-    "Latest anime news, manga updates, trailers, seasonal anime, and anime industry coverage.",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://anivoid.com"
-  ),
+    "Anivoid News Network is an anime news platform covering the latest anime news, manga updates, anime release dates, trailers, announcements, seasonal anime, reviews, watch guides, and anime recommendations.",
+
+  applicationName: "Anivoid News Network",
+
+  keywords: [
+    "Anivoid",
+    "Anivoid News Network",
+    "Anivoid Anime News Network",
+    "Anivoid anime news",
+    "Anivoid news",
+    "anime news",
+    "latest anime news",
+    "anime news network",
+    "anime release dates",
+    "anime trailers",
+    "anime announcements",
+    "anime reviews",
+    "anime guides",
+    "anime recommendations",
+    "best anime",
+    "seasonal anime",
+    "manga updates",
+    "manga news",
+    "anime watch order",
+    "anime filler list",
+    "anime industry news",
+  ],
+
+  authors: [
+    {
+      name: "Anivoid News Network",
+      url: siteUrl,
+    },
+  ],
+
+  creator: "Anivoid News Network",
+  publisher: "Anivoid News Network",
+
+  alternates: {
+    canonical: "/",
+  },
+
   openGraph: {
-    title: "Anivoid",
-    description:
-      "Latest anime news, manga updates, trailers, seasonal anime, and anime industry coverage.",
-    url: "/",
-    siteName: "Anivoid",
     type: "website",
+    locale: "en_US",
+    url: "/",
+    siteName: "Anivoid News Network",
+    title: "Anivoid News Network | Anime News, Release Dates & Guides",
+    description:
+      "Follow Anivoid News Network for the latest anime news, manga updates, anime release dates, trailers, announcements, seasonal anime, reviews, watch guides, and anime recommendations.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Anivoid Anime News Network",
+        alt: "Anivoid News Network - Anime News, Release Dates and Guides",
       },
     ],
   },
+
   twitter: {
     card: "summary_large_image",
-    title: "Anivoid",
+    title: "Anivoid News Network | Anime News, Release Dates & Guides",
     description:
-      "Latest anime news, manga updates, trailers, seasonal anime, and anime industry coverage.",
+      "Latest anime news, manga updates, anime release dates, trailers, announcements, seasonal anime, reviews, guides, and recommendations from Anivoid News Network.",
     images: ["/og-image.jpg"],
+    creator: "@anivoid",
   },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+
+  category: "Anime News",
 };
 
 export default function RootLayout({

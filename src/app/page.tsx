@@ -46,10 +46,10 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <BackgroundGlow />
-
+<CategoryPills />
       <HeroSection anime={trendingAnime} />
 
-      <CategoryPills />
+      
 
       <EditorialSection news={latestNews} trendingAnime={trendingAnime} />
 

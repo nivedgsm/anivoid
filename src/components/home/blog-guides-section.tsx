@@ -7,8 +7,8 @@ import { FadeIn } from "@/components/shared/fade-in";
 export function BlogGuidesSection() {
   const posts = getAllBlogPosts();
 
-  const featuredPosts = posts.slice(0, 3);
-  const guideLinks = posts.slice(3, 10);
+  const featuredPosts = posts.slice(0, 6);
+  const guideLinks = posts.slice(6, 10);
 
   return (
     <FadeIn>
@@ -42,95 +42,58 @@ export function BlogGuidesSection() {
           </div>
 
           {/* CONTENT */}
-          <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_420px]">
-            {/* FEATURED CARDS */}
-            <div className="grid gap-6 md:grid-cols-3">
-              {featuredPosts.map((post, index) => {
-                const isMainCard = index === 0;
+          <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_390px]">
+            {/* GUIDE CARDS */}
+            <div className="grid gap-6 md:grid-cols-2 2xl:grid-cols-3">
+              {featuredPosts.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group relative overflow-hidden rounded-[30px] border border-blue-500/15 bg-[#050711]/80 shadow-[0_28px_90px_rgba(0,0,0,0.35)] transition duration-300 hover:-translate-y-1 hover:border-blue-400/60 hover:shadow-[0_32px_110px_rgba(77,127,255,0.18)]"
+                >
+                  <div className="relative h-[260px] overflow-hidden bg-[#02040b]">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover object-center opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100"
+                    />
 
-                return (
-                  <Link
-                    key={post.slug}
-                    href={`/blog/${post.slug}`}
-                    className={`
-                      group relative overflow-hidden rounded-[30px] border border-blue-500/15 bg-[#050711]/80 shadow-[0_28px_90px_rgba(0,0,0,0.35)] transition duration-300 hover:-translate-y-1 hover:border-blue-400/60 hover:shadow-[0_32px_110px_rgba(77,127,255,0.18)]
-                      ${isMainCard ? "md:col-span-2" : ""}
-                    `}
-                  >
-                    <div
-                      className={`
-                        relative overflow-hidden bg-[#02040b]
-                        ${isMainCard ? "h-[420px]" : "h-[420px] md:h-[260px]"}
-                      `}
-                    >
-                      <Image
-                        src={post.image}
-                        alt={post.title}
-                        fill
-                        sizes={
-                          isMainCard
-                            ? "(max-width: 768px) 100vw, 66vw"
-                            : "(max-width: 768px) 100vw, 33vw"
-                        }
-                        className="object-cover object-center opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100"
-                      />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#050711] via-[#050711]/35 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/25 via-transparent to-blue-950/20" />
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#050711] via-[#050711]/35 to-transparent" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/25 via-transparent to-blue-950/20" />
-
-                      <div className="absolute left-5 top-5 rounded-full border border-blue-400/25 bg-black/60 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-blue-100 backdrop-blur">
-                        {post.category}
-                      </div>
-
-                      {isMainCard && (
-                        <div className="absolute right-5 top-5 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-white/80 backdrop-blur">
-                          Featured
-                        </div>
-                      )}
+                    <div className="absolute left-5 top-5 rounded-full border border-blue-400/25 bg-black/60 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-blue-100 backdrop-blur">
+                      {post.category}
                     </div>
+                  </div>
 
-                    <div
-                      className={`
-                        relative p-6
-                        ${isMainCard ? "md:p-8" : ""}
-                      `}
-                    >
-                      <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-400">
-                        {post.contentType}
-                      </p>
+                  <div className="relative p-6">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-400">
+                      {post.contentType}
+                    </p>
 
-                      <h3
-                        className={`
-                          mt-3 font-black leading-tight tracking-tight text-white transition group-hover:text-blue-300
-                          ${isMainCard ? "text-3xl md:text-4xl" : "text-2xl"}
-                        `}
-                      >
-                        {post.title}
-                      </h3>
+                    <h3 className="mt-3 line-clamp-2 text-2xl font-black leading-tight tracking-tight text-white transition group-hover:text-blue-300">
+                      {post.title}
+                    </h3>
 
-                      <p
-                        className={`
-                          mt-4 text-sm leading-7 text-blue-100/60
-                          ${isMainCard ? "line-clamp-3 max-w-2xl" : "line-clamp-3"}
-                        `}
-                      >
-                        {post.description}
-                      </p>
+                    <p className="mt-4 line-clamp-3 text-sm leading-7 text-blue-100/60">
+                      {post.description}
+                    </p>
 
-                      <div className="mt-6 inline-flex items-center rounded-full border border-blue-400/25 bg-blue-500/10 px-4 py-2 text-sm font-black text-blue-200 transition group-hover:border-blue-300/60 group-hover:bg-blue-500/20 group-hover:text-white">
-                        Read guide
-                        <span className="ml-2 transition group-hover:translate-x-1">
-                          →
-                        </span>
-                      </div>
+                    <div className="mt-6 inline-flex items-center rounded-full border border-blue-400/25 bg-blue-500/10 px-4 py-2 text-sm font-black text-blue-200 transition group-hover:border-blue-300/60 group-hover:bg-blue-500/20 group-hover:text-white">
+                      Read guide
+                      <span className="ml-2 transition group-hover:translate-x-1">
+                        →
+                      </span>
                     </div>
+                  </div>
 
-                    <div className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100">
-                      <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-blue-300/70 to-transparent" />
-                    </div>
-                  </Link>
-                );
-              })}
+                  <div className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100">
+                    <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-blue-300/70 to-transparent" />
+                  </div>
+                </Link>
+              ))}
             </div>
 
             {/* SIDEBAR */}
@@ -143,12 +106,12 @@ export function BlogGuidesSection() {
                 </p>
 
                 <h3 className="mt-3 text-3xl font-black tracking-tight text-white">
-                  Popular Anime Topics
+                  More Anime Topics
                 </h3>
 
                 <p className="mt-3 text-sm leading-7 text-blue-100/60">
-                  Quick links to anime guides that help users discover what to
-                  watch next.
+                  More guides for streaming picks, filler lists, and anime news
+                  discovery.
                 </p>
               </div>
 
@@ -160,7 +123,7 @@ export function BlogGuidesSection() {
                     className="group flex items-center gap-4 rounded-2xl border border-blue-500/10 bg-white/[0.025] p-4 transition hover:border-blue-400/45 hover:bg-blue-500/10"
                   >
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-blue-400/20 bg-blue-500/10 text-sm font-black text-blue-300 transition group-hover:border-blue-300/60 group-hover:bg-blue-500/20 group-hover:text-white">
-                      {String(index + 1).padStart(2, "0")}
+                      {String(index + 7).padStart(2, "0")}
                     </div>
 
                     <div className="min-w-0 flex-1">

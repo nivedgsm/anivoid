@@ -19,7 +19,7 @@ const navItems = [
     href: "/news",
   },
   {
-    label: "Blog",
+    label: "Guides",
     href: "/blog",
   },
   {

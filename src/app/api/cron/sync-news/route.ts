@@ -10,19 +10,14 @@ export async function GET(request: Request) {
   const authHeader = request.headers.get("authorization");
   const cronSecret = process.env.NEWS_SYNC_SECRET;
 
-  if (!cronSecret) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Missing NEWS_SYNC_SECRET",
-      },
-      {
-        status: 500,
-      }
-    );
-  }
+  const isAuthorizedBySecret =
+    cronSecret && authHeader === `Bearer ${cronSecret}`;
 
-  if (authHeader !== `Bearer ${cronSecret}`) {
+  const isAuthorizedByVercelCron =
+    process.env.VERCEL === "1" &&
+    request.headers.get("user-agent")?.includes("vercel-cron");
+
+  if (!isAuthorizedBySecret && !isAuthorizedByVercelCron) {
     return NextResponse.json(
       {
         success: false,

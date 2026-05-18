@@ -48,48 +48,30 @@ export async function getTrendingAnime() {
     }
   `;
 
-  try {
-    const response = await fetch(
-      ANILIST_API,
-      {
-        method: "POST",
+  const response = await fetch(
+    ANILIST_API,
+    {
+      method: "POST",
 
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
 
-        next: {
-          revalidate: 3600,
-        },
+      next: {
+        revalidate: 3600,
+      },
 
-        body: JSON.stringify({
-          query,
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      console.warn(
-        "getTrendingAnime failed:",
-        response.status
-      );
-
-      return [];
+      body: JSON.stringify({
+        query,
+      }),
     }
+  );
 
-    const data =
-      await response.json();
+  const data =
+    await response.json();
 
-    return data?.data?.Page?.media || [];
-  } catch (error) {
-    console.warn(
-      "getTrendingAnime error:",
-      error
-    );
-
-    return [];
-  }
+  return data.data.Page.media;
 }
 
 export async function getUpcomingAnime() {
@@ -139,48 +121,30 @@ export async function getUpcomingAnime() {
     }
   `;
 
-  try {
-    const response = await fetch(
-      ANILIST_API,
-      {
-        method: "POST",
+  const response = await fetch(
+    ANILIST_API,
+    {
+      method: "POST",
 
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
 
-        next: {
-          revalidate: 3600,
-        },
+      next: {
+        revalidate: 3600,
+      },
 
-        body: JSON.stringify({
-          query,
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      console.warn(
-        "getUpcomingAnime failed:",
-        response.status
-      );
-
-      return [];
+      body: JSON.stringify({
+        query,
+      }),
     }
+  );
 
-    const data =
-      await response.json();
+  const data =
+    await response.json();
 
-    return data?.data?.Page?.media || [];
-  } catch (error) {
-    console.warn(
-      "getUpcomingAnime error:",
-      error
-    );
-
-    return [];
-  }
+  return data.data.Page.media;
 }
 
 export async function getAnimeById(
@@ -324,7 +288,7 @@ export async function getAnimeById(
       await response.json();
 
     if (data?.errors?.length) {
-      console.warn(
+      console.error(
         "AniList getAnimeById errors:",
         data.errors
       );
@@ -334,7 +298,7 @@ export async function getAnimeById(
 
     return data?.data?.Media || null;
   } catch (error) {
-    console.warn(
+    console.error(
       "getAnimeById error:",
       error
     );
@@ -383,54 +347,35 @@ export async function searchAnime(
     }
   `;
 
-  try {
-    const response = await fetch(
-      ANILIST_API,
-      {
-        method: "POST",
+  const response = await fetch(
+    ANILIST_API,
+    {
+      method: "POST",
 
-        headers: {
-          "Content-Type":
-            "application/json",
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+
+      body: JSON.stringify({
+        query,
+
+        variables: {
+          search,
         },
+      }),
 
-        body: JSON.stringify({
-          query,
-
-          variables: {
-            search,
-          },
-        }),
-
-        next: {
-          revalidate: 60,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      console.warn(
-        "searchAnime failed:",
-        response.status
-      );
-
-      return [];
+      next: {
+        revalidate: 60,
+      },
     }
+  );
 
-    const data =
-      await response.json();
+  const data =
+    await response.json();
 
-    return data?.data?.Page?.media || [];
-  } catch (error) {
-    console.warn(
-      "searchAnime error:",
-      error
-    );
-
-    return [];
-  }
+  return data.data.Page.media;
 }
-
 export async function getBrowseAnime({
   page = 1,
   genre = "",
@@ -481,55 +426,37 @@ export async function getBrowseAnime({
     }
   `;
 
-  try {
-    const response = await fetch(
-      ANILIST_API,
-      {
-        method: "POST",
+  const response = await fetch(
+    ANILIST_API,
+    {
+      method: "POST",
 
-        headers: {
-          "Content-Type":
-            "application/json",
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+
+      next: {
+        revalidate: 3600,
+      },
+
+      body: JSON.stringify({
+        query,
+
+        variables: {
+          page,
+          genre:
+            genre || undefined,
+          sort,
         },
-
-        next: {
-          revalidate: 3600,
-        },
-
-        body: JSON.stringify({
-          query,
-
-          variables: {
-            page,
-            genre:
-              genre || undefined,
-            sort,
-          },
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      console.warn(
-        "getBrowseAnime failed:",
-        response.status
-      );
-
-      return [];
+      }),
     }
+  );
 
-    const data =
-      await response.json();
+  const data =
+    await response.json();
 
-    return data?.data?.Page?.media || [];
-  } catch (error) {
-    console.warn(
-      "getBrowseAnime error:",
-      error
-    );
-
-    return [];
-  }
+  return data.data.Page.media;
 }
 
 export async function getSeasonalAnime({
@@ -586,53 +513,35 @@ export async function getSeasonalAnime({
     }
   `;
 
-  try {
-    const response = await fetch(
-      ANILIST_API,
-      {
-        method: "POST",
+  const response = await fetch(
+    ANILIST_API,
+    {
+      method: "POST",
 
-        headers: {
-          "Content-Type":
-            "application/json",
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+
+      next: {
+        revalidate: 3600,
+      },
+
+      body: JSON.stringify({
+        query,
+
+        variables: {
+          season,
+          seasonYear: year,
         },
-
-        next: {
-          revalidate: 3600,
-        },
-
-        body: JSON.stringify({
-          query,
-
-          variables: {
-            season,
-            seasonYear: year,
-          },
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      console.warn(
-        "getSeasonalAnime failed:",
-        response.status
-      );
-
-      return [];
+      }),
     }
+  );
 
-    const data =
-      await response.json();
+  const data =
+    await response.json();
 
-    return data?.data?.Page?.media || [];
-  } catch (error) {
-    console.warn(
-      "getSeasonalAnime error:",
-      error
-    );
-
-    return [];
-  }
+  return data.data.Page.media;
 }
 
 export async function fetchReviewAnime() {
@@ -720,7 +629,7 @@ export async function fetchReviewAnime() {
 
   } catch (error) {
 
-    console.warn(
+    console.error(
       "fetchReviewAnime error:",
       error
     );
